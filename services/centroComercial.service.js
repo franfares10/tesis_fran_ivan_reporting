@@ -9,6 +9,17 @@ const getCentroComercialById = async function (idCentroComercial) {
   }
 };
 
+const postCentroComercial = async function(nombre,descripcion){
+  try{
+    let CentroComercialNuevo = new CentroComercial(nombre,descripcion)
+    return await CentroComercialNuevo.save()
+  }catch(e){
+    console.error("XX. Error posteando en Centro Comercial")
+  }
+
+}
+
 module.exports = {
   getCentroComercialById,
+  postCentroComercial
 };

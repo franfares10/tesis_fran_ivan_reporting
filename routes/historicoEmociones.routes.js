@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { validarCampos } = require("../middlewares/validar-campos");
+const { validarCampos } = require("../middlewares/validator");
 const {postHistoricoEmocion} = require("../services/historicoEmociones.service")
 const router = Router();
 

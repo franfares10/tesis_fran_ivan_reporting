@@ -9,7 +9,16 @@ const getEmocionById = async function (idHistoricoEmocion) {
     );
   }
 };
+const postEmociones = async function(nombre,descripcion){
+  try{
+    let EmocionNueva = new Emociones(nombre,descripcion)
+    return await EmocionNueva.save()
+  }catch(e){
+    console.error("XX. Error posteando en Centro Comercial")
+  }
 
+}
 module.exports = {
-  postHistoricoEmocion,
+  getEmocionById,
+  postEmociones
 };
