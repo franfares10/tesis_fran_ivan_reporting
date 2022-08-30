@@ -1,0 +1,29 @@
+{
+  "name": "reporting-tesis",
+  "version": "1.0.0",
+  "description": "API that generates .pdf reporting to associated brands",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IvanPonceCurto/tesis_fran_ivan_reporting.git"
+  },
+  "author": "Francisco, Fares. Iván, Ponce Curto.",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/IvanPonceCurto/tesis_fran_ivan_reporting/issues"
+  },
+  "homepage": "https://github.com/IvanPonceCurto/tesis_fran_ivan_reporting#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.1",
+    "express": "^4.18.1",
+    "express-validator": "^6.14.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.5.3",
+    "nodemon": "^2.0.19"
+  }
+}
