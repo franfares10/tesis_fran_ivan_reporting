@@ -1,20 +1,20 @@
 let Emociones = require("../models/emociones.model");
 
-const getEmocionById = async function (idHistoricoEmocion) {
+const getEmocionById = async function (idEmocion) {
   try {
-    return await Emociones.findById(idHistoricoEmocion);
+    return await Emociones.findById(idEmocion);
   } catch (error) {
-    console.error(
-      "XX. Error guardando en Historico_Emocion, " + error.getMessage()
-    );
-  }
+    throw new Error("XX. Error buscando emociones");
+}
 };
-const postEmociones = async function(nombre,descripcion){
+
+const postEmociones = async function(body){
   try{
-    let EmocionNueva = new Emociones(nombre,descripcion)
+    let EmocionNueva = new Emociones(body)
     return await EmocionNueva.save()
   }catch(e){
-    console.error("XX. Error posteando en Centro Comercial")
+    console.log(e)
+    console.error("XX. Error posteando en Emociones")
   }
 
 }

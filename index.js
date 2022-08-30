@@ -26,10 +26,10 @@ app.get('/', (req, res) => {
 
 // Paths
 app.use('/api/emociones/historico', require('./routes/historicoEmociones.routes'))
-app.use('/api/emociones', require('./routes/historicoEmociones.routes'))
-app.use('/api/prendas', require('./routes/historicoEmociones.routes'))
-app.use('/api/centros', require('./routes/historicoEmociones.routes'))
-app.use('/api/marcas', require('./routes/historicoEmociones.routes'))
+app.use('/api/emociones', require('./routes/emociones.routes'))
+app.use('/api/prendas', require('./routes/prendas.routes'))
+app.use('/api/centros', require('./routes/centros.routes'))
+app.use('/api/marcas', require('./routes/marcas.routes'))
 
 app.listen(process.env.PORT, () => {
     console.log('Example app listening on port ' + process.env.PORT);

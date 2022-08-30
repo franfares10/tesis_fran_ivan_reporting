@@ -1,6 +1,7 @@
 const MarcasService = require("../services/marca.service")
 
 const postMarcas = async function (req, res) {
+  console.log("Llegó")
   const { nombre, descripcion } = req.body;
 
   try {
