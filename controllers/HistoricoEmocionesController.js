@@ -4,6 +4,8 @@ const EmocionService = require("../services/emociones.service");
 const PrendaService = require("../services/prenda.service");
 const HistoricoEmociones = require("../models/historicoEmociones.model");
 const { generateReport } = require("./ExcelReportsControlller");
+const Excel = require('exceljs');
+const MailService = require("../services/mailService");
 
 const postHistoricoEmociones = async function (req, res) {
   const { prenda, emocion, centro } = req.body;
@@ -38,10 +40,6 @@ const postHistoricoEmociones = async function (req, res) {
   }
 };
 
-/*const scheduledGenerateReport = nodeSchedule.scheduleJob('30 * * * *',function generateReport(){
-  //COMPLETAR CUANDO YA SEPA COMO SE HACE
-})*/
-
 const getHistoricoPorMarca = async function (req, res) {
   const { marca } = req.params;
   try {
@@ -66,51 +64,48 @@ const getHistoricoEmociones = async function (req, res) {
   }
 };
 
-const preProcesarDatosReportes = async function (req,res) {
-  const {marca } = req.params
-  try {
-    //Busco las prendas de la marca, que estén entre los rangos de fechas
-    const datosHistoricos = await HistoricoEmocionesService.getHistoricoPorMarca(marca)
-    //Falta lo de la fecha
-    let { brandWorkbook, literalTitulo } = await generateReport();
-    let worksheet = brandWorkbook.getWorksheet(literalTitulo);
-    worksheet.columns = [
-      { header: "Prenda", key: "Prenda", width: "20" },
-      { header: "Marca", key: "Marca", width: "20" },
-      { header: "Emocion", key: "Emocion", width: "20" },
-      { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
-    ];
-    //Prenda-Marca-Emocion-Centro Comercial
-    let indice = 2;
-    datosHistoricos.forEach((historicoEmocion) => {
-      //Escribo todo directo en el excel, convierto de json a csv para tener las cosas más facil.
-      worksheet.insertRow(indice, [
-        historicoEmocion.prenda.descripcion,
-        historicoEmocion.prenda.marca.nombre,
-        historicoEmocion.emocion.nombre,
-        historicoEmocion.centroComercial.nombre
-      ]);
-      indice++;
-    });
-    res.setHeader(
-      "Content-Type",
-      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-    );
-    res.setHeader(
-      "Content-Disposition",
-      "attachment; filename=" +"tutorial.xlsx"
-    );
-    return brandWorkbook.xlsx.write(res).then(function () {
-      res.status(200).end();
-    }); 
-  } catch (e) {
-    console.log(e)
+const createReport = async function (req,res) {
+  const {marca} = req.params;
+
+  try{
+      const historicoDeMarca = await HistoricoEmocionesService.getHistoricoPorMarca(marca);
+      const mailResponsable = historicoDeMarca[0].prenda.marca.mail;
+      const filename = 'MonthlyReport.xlsx';
+      let workbook = new Excel.Workbook();
+      let worksheet = workbook.addWorksheet('Dressy Monthly Report');
+
+      if(historicoDeMarca.length > 0){
+      worksheet.columns = [
+        { header: "Prenda", key: "Prenda", width: "20" },
+        { header: "Marca", key: "Marca", width: "20" },
+        { header: "Emocion", key: "Emocion", width: "20" },
+        { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
+      ];
+  
+      historicoDeMarca.forEach((registroDeEmocion) => {
+          worksheet.addRow([
+            registroDeEmocion.prenda.descripcion,
+            registroDeEmocion.prenda.marca.nombre,
+            registroDeEmocion.emocion.nombre,
+            registroDeEmocion.centroComercial.nombre
+          ]);
+      });
+
+      const buffer = await workbook.xlsx.writeBuffer();
+      
+      await MailService.mandarMail(buffer, filename,mailResponsable);
   }
-};
+    
+    return res.status(200).json({message:"Mail enviado correctamente"});
+  }catch(e){
+    console.log(e)
+    return res.status(500).json({message:"Ocurrio un error mandando el mail"});
+  }
+}
 
 module.exports = {
   postHistoricoEmociones,
   getHistoricoPorMarca,
   getHistoricoEmociones,
-  preProcesarDatosReportes
+  createReport
 };

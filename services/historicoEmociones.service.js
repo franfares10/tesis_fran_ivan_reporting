@@ -35,6 +35,7 @@ const getHistoricoTotales = async function () {
 const getHistoricoPorMarca = async function (marcaDeseada){
   try{
     return await HistoricoEmociones.find({"prenda.marca.nombre":marcaDeseada})
+    
   }catch(e){
     console.log(e)
     throw new Error("XX. Error retornando todas las posibles marcas")

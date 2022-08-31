@@ -5,8 +5,8 @@ const {
   postHistoricoEmociones,
   getHistoricoPorMarca,
   getHistoricoEmociones,
-  preProcesarDatosReportes
-} = require("../controllers/ReportingController");
+  createReport
+} = require("../controllers/HistoricoEmocionesController");
 const router = Router();
 
 router.get(
@@ -30,6 +30,6 @@ router.post(
   postHistoricoEmociones
 );
 
-router.get("/reporte/:marca",preProcesarDatosReportes)
+router.post("/reporte/:marca",createReport)
 
 module.exports = router;

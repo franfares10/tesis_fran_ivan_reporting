@@ -4,7 +4,8 @@
   "description": "API that generates .pdf reporting to associated brands",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,7 @@
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.5.3",
     "node-schedule": "^2.1.0",
+    "nodemailer": "^6.7.8",
     "nodemon": "^2.0.19"
   }
 }
