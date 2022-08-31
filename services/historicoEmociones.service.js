@@ -2,8 +2,8 @@ let HistoricoEmociones = require("../models/historicoEmociones.model");
 
 const postHistoricoEmocion = async function (
   prendaObtenida,
-  centroObtenido,
   emocionObtenida,
+  centroObtenido,
   fecha
 ) {
   try {
@@ -22,9 +22,9 @@ const postHistoricoEmocion = async function (
   }
 };
 
-const getHistoricoEmocion = async function (idHistoricoEmocion) {
+const getHistoricoTotales = async function () {
   try {
-    return await HistoricoEmociones.findById(idHistoricoEmocion);
+    return await HistoricoEmociones.find();
   } catch (error) {
     console.error(
       "XX. Error buscando en Historico_Emocion, " + error.getMessage()
@@ -34,7 +34,7 @@ const getHistoricoEmocion = async function (idHistoricoEmocion) {
 
 const getHistoricoPorMarca = async function (marcaDeseada){
   try{
-    return await HistoricoEmociones.find({prenda:{marca:marcaDeseada}})
+    return await HistoricoEmociones.find({"prenda.marca.nombre":marcaDeseada})
   }catch(e){
     console.log(e)
     throw new Error("XX. Error retornando todas las posibles marcas")
@@ -43,6 +43,6 @@ const getHistoricoPorMarca = async function (marcaDeseada){
 
 module.exports = {
   postHistoricoEmocion,
-  getHistoricoEmocion,
+  getHistoricoTotales,
   getHistoricoPorMarca
 };

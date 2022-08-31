@@ -3,6 +3,7 @@ const CentroComercialService = require("../services/centroComercial.service");
 const EmocionService = require("../services/emociones.service");
 const PrendaService = require("../services/prenda.service");
 const HistoricoEmociones = require("../models/historicoEmociones.model");
+const { generateReport } = require("./ExcelReportsControlller");
 
 const postHistoricoEmociones = async function (req, res) {
   const { prenda, emocion, centro } = req.body;
@@ -41,35 +42,76 @@ const postHistoricoEmociones = async function (req, res) {
   //COMPLETAR CUANDO YA SEPA COMO SE HACE
 })*/
 
+const getHistoricoPorMarca = async function (req, res) {
+  const { marca } = req.params;
+  try {
+    let result = await HistoricoEmocionesService.getHistoricoPorMarca(marca);
+    return res.status(200).json({
+      result,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
+
+const getHistoricoEmociones = async function (req, res) {
+  try {
+    console.log("Llegó");
+    let result = await HistoricoEmocionesService.getHistoricoTotales();
+    return res.status(200).json({ result });
+  } catch (e) {
+    return res
+      .status(500)
+      .json({ message: "Error fetching historico emociones" });
+  }
+};
+
 const preProcesarDatosReportes = async function (
-  marcaParametro,
-  fechaInicio,
-  fechaFin
+  req,res
 ) {
   try {
     //Busco las prendas de la marca, que estén entre los rangos de fechas
-    const datosHistoricos = await HistoricoEmociones.find({
-      prenda: {
-        marca: marcaParametro,
-      },
-      fecha: { $gt: fechaInicio, $lt: fechaFin },
-    });
-    let emocionesPorPrenda = [];
+    const datosHistoricos = await HistoricoEmocionesService.getHistoricoPorMarca("Kevingston")
+    //Falta lo de la fecha
+    let { brandWorkbook, literalTitulo } = await generateReport();
+    let worksheet = brandWorkbook.getWorksheet(literalTitulo);
+    worksheet.columns = [
+      { header: "Prenda", key: "Prenda", width: "20" },
+      { header: "Marca", key: "Marca", width: "20" },
+      { header: "Emocion", key: "Emocion", width: "20" },
+      { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
+    ];
+    //Prenda-Marca-Emocion-Centro Comercial
+    let indice = 1;
     datosHistoricos.forEach((historicoEmocion) => {
-      //HistoricoEmocion
+      //Escribo todo directo en el excel, convierto de json a csv para tener las cosas más facil.
+      worksheet.insertRow(indice, [
+        historicoEmocion.prenda.descripcion,
+        historicoEmocion.prenda.marca.nombre,
+        historicoEmocion.emocion.nombre,
+        historicoEmocion.centroComercial.nombre
+      ]);
+      indice++;
     });
-  } catch (e) {}
-};
-
-const getHistoricoPorMarca = async function (req, res) {
-  try{
-    return await HistoricoEmocionesService.getHistoricoPorMarca(req.body.marca)
-  }catch(e){
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    );
+    res.setHeader(
+      "Content-Disposition",
+      "attachment; filename=" +"tutorial.xlsx"
+    );
+    return brandWorkbook.xlsx.write(res).then(function () {
+      res.status(200).end();
+    }); 
+  } catch (e) {
     console.log(e)
   }
 };
 
 module.exports = {
   postHistoricoEmociones,
-  getHistoricoPorMarca
+  getHistoricoPorMarca,
+  getHistoricoEmociones,
+  preProcesarDatosReportes
 };

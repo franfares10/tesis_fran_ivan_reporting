@@ -2,31 +2,33 @@ const { Router } = require("express");
 const { check } = require("express-validator");
 const { validarCampos } = require("../middlewares/validator");
 const {
-  postHistoricoEmocion,
+  postHistoricoEmociones,
   getHistoricoPorMarca,
-  getHistoricoEmocion,
-} = require("../services/historicoEmociones.service");
+  getHistoricoEmociones,
+  preProcesarDatosReportes
+} = require("../controllers/ReportingController");
 const router = Router();
 
 router.get(
-  "/marca/historico",
-  [check("marca").not().isEmpty(), validarCampos],
+  "/totales/:marca",
   getHistoricoPorMarca
 );
+
 router.get(
-  "/marca/",
-  [check("marca").not().isEmpty(), validarCampos],
-  getHistoricoEmocion
+  "/totales",
+  getHistoricoEmociones
 );
 
 router.post(
   "/",
   [
     check("prenda").not().isEmpty(),
-    check("centroComercial").not().isEmpty(),
+    check("centro").not().isEmpty(),
     check("emocion").not().isEmpty(),
     validarCampos,
   ],
-  postHistoricoEmocion
+  postHistoricoEmociones
 );
+
+router.get("/reporte",preProcesarDatosReportes)
 module.exports = router;
