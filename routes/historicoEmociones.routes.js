@@ -30,5 +30,6 @@ router.post(
   postHistoricoEmociones
 );
 
-router.get("/reporte",preProcesarDatosReportes)
+router.get("/reporte/:marca",preProcesarDatosReportes)
+
 module.exports = router;

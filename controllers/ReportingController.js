@@ -38,7 +38,7 @@ const postHistoricoEmociones = async function (req, res) {
   }
 };
 
-/*const scheduledGenerateReport = nodeSchedule.scheduleJob('',function generateReport(){
+/*const scheduledGenerateReport = nodeSchedule.scheduleJob('30 * * * *',function generateReport(){
   //COMPLETAR CUANDO YA SEPA COMO SE HACE
 })*/
 
@@ -66,12 +66,11 @@ const getHistoricoEmociones = async function (req, res) {
   }
 };
 
-const preProcesarDatosReportes = async function (
-  req,res
-) {
+const preProcesarDatosReportes = async function (req,res) {
+  const {marca } = req.params
   try {
     //Busco las prendas de la marca, que estén entre los rangos de fechas
-    const datosHistoricos = await HistoricoEmocionesService.getHistoricoPorMarca("Kevingston")
+    const datosHistoricos = await HistoricoEmocionesService.getHistoricoPorMarca(marca)
     //Falta lo de la fecha
     let { brandWorkbook, literalTitulo } = await generateReport();
     let worksheet = brandWorkbook.getWorksheet(literalTitulo);
@@ -82,7 +81,7 @@ const preProcesarDatosReportes = async function (
       { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
     ];
     //Prenda-Marca-Emocion-Centro Comercial
-    let indice = 1;
+    let indice = 2;
     datosHistoricos.forEach((historicoEmocion) => {
       //Escribo todo directo en el excel, convierto de json a csv para tener las cosas más facil.
       worksheet.insertRow(indice, [
