@@ -1,10 +1,8 @@
 const CentroComercialService = require("../services/centroComercial.service");
 
 const postCentroComercial = async function (req, res) {
-  const { descripcion, nombre } = req.body;
-
   try {
-    await CentroComercialService.postCentroComercial(nombre, descripcion);
+    await CentroComercialService.postCentroComercial(req.body);
     return res.status(201).json({
       message: "Registro creado correctamente",
     });
@@ -17,7 +15,7 @@ const postCentroComercial = async function (req, res) {
   }
 };
 const getCentroComercialById = async function (req, res) {
-    const { id } = req.body;
+    const { id } = req.params;
   
     try {
       let CentroComercialObtenido = await CentroComercialService.getCentroComercialById(id);

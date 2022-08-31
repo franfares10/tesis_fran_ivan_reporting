@@ -3,15 +3,15 @@ let CentroComercial = require("../models/centroComercial.model")
 
 const getCentroComercialById = async function (idCentroComercial) {
   try{
-    return await CentroComercial.findById(idCentroComercial)
+    return await CentroComercial.findById(idCentroComercial,'-_id -__v')
   }catch(error){
-    console.error("XX. Error buscando id en Centros Comerciales, "+error.getMessage())
+    console.error("XX. Error buscando id en Centros Comerciales")
   }
 };
 
-const postCentroComercial = async function(nombre,descripcion){
+const postCentroComercial = async function(body){
   try{
-    let CentroComercialNuevo = new CentroComercial(nombre,descripcion)
+    let CentroComercialNuevo = new CentroComercial(body)
     return await CentroComercialNuevo.save()
   }catch(e){
     console.error("XX. Error posteando en Centro Comercial")

@@ -1,7 +1,7 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
 const { validarCampos } = require("../middlewares/validator");
-const {getMarcaModelo,postMarcaModelo} = require("../services/marca.service")
+const {getMarcasById,postMarcas} = require("../controllers/MarcasController")
 const router = Router();
 
 
@@ -10,18 +10,15 @@ router.post(
   [
     check("nombre").not().isEmpty(),
     check("descripcion").not().isEmpty(),
+    check("emailEncargado").not().isEmpty(),
     validarCampos,
   ],
-  postMarcaModelo
+  postMarcas
 );
 
 router.get(
-    "/marcas",
-    [
-      check("id").not().isEmpty(),
-      validarCampos,
-    ],
-    getMarcaModelo
+    "/marcas/:id",
+    getMarcasById
   );
 
 module.exports = router;

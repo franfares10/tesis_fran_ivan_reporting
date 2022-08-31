@@ -9,12 +9,12 @@ const getMarcaModelo = async function (idMarcaModelo) {
   }
 };
 
-const postMarcaModelo = async function(nombre,descripcion){
+const postMarcaModelo = async function(body){
   try{
-    let MarcaNueva = new MarcaModelo(nombre,descripcion)
+    let MarcaNueva = new MarcaModelo(body)
     return await MarcaNueva.save();
   }catch(e){
-    console.error("XX. Error guardando la Marca"+e.getMessage())
+    console.error("XX. Error guardando la Marca")
   }
 }
 

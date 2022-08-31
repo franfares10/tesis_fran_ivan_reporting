@@ -1,11 +1,8 @@
 const MarcasService = require("../services/marca.service")
 
 const postMarcas = async function (req, res) {
-  console.log("Llegó")
-  const { nombre, descripcion } = req.body;
-
   try {
-    await MarcasService.postMarcaModelo(nombre, descripcion);
+    await MarcasService.postMarcaModelo(req.body);
     return res.status(201).json({
       message: "Registro creado correctamente",
     });
@@ -19,7 +16,7 @@ const postMarcas = async function (req, res) {
 };
 
 const getMarcasById = async function (req, res) {
-    const { id } = req.body;
+    const { id } = req.params;
   
     try {
       let MarcaObtenida = await MarcasService.getMarcaModelo(id);

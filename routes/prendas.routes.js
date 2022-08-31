@@ -1,28 +1,24 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
+const { postPrendas,getPrendas } = require("../controllers/PrendasController");
 const { validarCampos } = require("../middlewares/validator");
-const {getIdPrendaModelo,postPrenda} = require("../services/prenda.service")
 const router = Router();
 
 
 router.post(
-  "/",
+  "/prendas", 
   [
     check("marca").not().isEmpty(),
     check("descripcion").not().isEmpty(),
     check("precio").not().isEmpty(),
     validarCampos,
   ],
-  postPrenda
+  postPrendas
 );
 
 router.get(
-    "/prendas",
-    [
-      check("id").not().isEmpty(),
-      validarCampos,
-    ],
-    getIdPrendaModelo
+    "/prendas/:id",
+    getPrendas
   );
 
 module.exports = router;

@@ -1,15 +1,12 @@
 const PrendaService = require("../services/prenda.service")
 
 const postPrendas = async function (req, res) {
-  const { descripcion, marca, precio } = req.body;
-
   try {
-    await PrendaService.postPrenda(marca, descripcion,precio);
+    await PrendaService.postPrenda(req.body);
     return res.status(201).json({
       message: "Registro creado correctamente",
     });
   } catch (err) {
-    console.log(err);
     return res.status(500).json({
       status: 500,
       message: "Internal Server Error.",
@@ -18,8 +15,7 @@ const postPrendas = async function (req, res) {
 };
 
 const getPrendas = async function (req, res) {
-    const { id } = req.body;
-  
+    const { id } = req.params;
     try {
       let PrendaObtenida = await PrendaService.getIdPrendaModelo(id);
       return res.status(200).json({

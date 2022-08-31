@@ -16,7 +16,6 @@ const postEmociones = async function(body){
     console.log(e)
     console.error("XX. Error posteando en Emociones")
   }
-
 }
 module.exports = {
   getEmocionById,
