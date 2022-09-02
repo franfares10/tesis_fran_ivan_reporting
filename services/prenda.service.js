@@ -5,7 +5,7 @@ const getIdPrendaModelo = async function (idPrendaModelo) {
   try{
     return await PrendaModelo.findById(idPrendaModelo,'-_id -__v')
   }catch(error){
-    console.error("XX. Error buscando id en Prendas")
+    console.error("XX. Error buscando id en Prendas" + error)
   }
 };
 
