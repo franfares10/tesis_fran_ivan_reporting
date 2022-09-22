@@ -10,6 +10,7 @@ router.post(
   [
     check("marca").not().isEmpty(),
     check("descripcion").not().isEmpty(),
+    check("tipo").not().isEmpty(),
     check("precio").not().isEmpty(),
     validarCampos,
   ],
