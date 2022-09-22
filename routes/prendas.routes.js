@@ -12,6 +12,7 @@ router.post(
     check("descripcion").not().isEmpty(),
     check("tipo").not().isEmpty(),
     check("precio").not().isEmpty(),
+    check("img_url").not().isEmpty(),
     validarCampos,
   ],
   postPrendas
