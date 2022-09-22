@@ -30,8 +30,23 @@ const getPrendas = async function (req, res) {
     }
   };
   
+const getPrendasByTipo = async function (req,res){
+  const {tipo} = req.params;
+  try{
+    let listaPrendas = await PrendaService.getPrendaByTipo(tipo);
+    return res.status(200).json({
+      listaPrendas
+    });
+  }catch(error){
+    return res.status(500).json({
+      status: 500,
+      message: "Internal Server Erorr"
+    });
+  }
+}
 
 module.exports = {
   postPrendas,
-  getPrendas
+  getPrendas,
+  getPrendasByTipo
 };

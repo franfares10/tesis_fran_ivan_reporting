@@ -1,6 +1,6 @@
 const { Router } = require("express");
 const { check } = require("express-validator");
-const { postPrendas,getPrendas } = require("../controllers/PrendasController");
+const { postPrendas,getPrendas,getPrendasByTipo } = require("../controllers/PrendasController");
 const { validarCampos } = require("../middlewares/validator");
 const router = Router();
 
@@ -22,5 +22,10 @@ router.get(
     "/prendas/:id",
     getPrendas
   );
+
+router.get(
+  "/prendas/tipo/:tipo",
+  getPrendasByTipo
+)
 
 module.exports = router;

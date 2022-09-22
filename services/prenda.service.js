@@ -19,7 +19,16 @@ const postPrenda = async function(prendaModelo){
   }
 }
 
+const getPrendaByTipo = async function (tipo){
+  try{
+    return await PrendaModelo.find({tipo})
+  }catch(error){
+    console.error("Error al traer prendas por tipo " + error)
+  }
+}
+
 module.exports = {
   getIdPrendaModelo,
-  postPrenda
+  postPrenda,
+  getPrendaByTipo
 };
