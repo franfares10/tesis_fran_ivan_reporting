@@ -86,7 +86,7 @@ const createReport = async function (req,res) {
           worksheet.addRow([
             registroDeEmocion.prenda.descripcion,
             registroDeEmocion.prenda.marca.nombre,
-            registroDeEmocion.emocion.nombre,
+            registroDeEmocion.emocion,
             registroDeEmocion.centroComercial.nombre
           ]);
       });
