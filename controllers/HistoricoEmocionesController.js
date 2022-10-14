@@ -15,7 +15,7 @@ const postHistoricoEmociones = async function (req, res) {
     const prendaObtenida = await PrendaService.getIdPrendaModelo(prenda);
 
     //Buscar emocion por id
-    const emocionObtenida = await EmocionService.getEmocionById(emocion);
+    //const emocionObtenida = await EmocionService.getEmocionById(emocion);
 
     //Buscar centroComercial por id
     const centroComercial = await CentroComercialService.getCentroComercialById(
@@ -23,7 +23,7 @@ const postHistoricoEmociones = async function (req, res) {
     );
     HistoricoEmocionesService.postHistoricoEmocion(
       prendaObtenida,
-      emocionObtenida,
+      emocion,
       centroComercial,
       Date.now()
     );
