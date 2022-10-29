@@ -13,6 +13,7 @@ router.post(
     check("tipo").not().isEmpty(),
     check("precio").not().isEmpty(),
     check("img_url").not().isEmpty(),
+    check("genero").not().isEmpty(),
     validarCampos,
   ],
   postPrendas
@@ -24,7 +25,7 @@ router.get(
   );
 
 router.get(
-  "/prendas/tipo/:tipo",
+  "/prendas/tipo/:tipo/:genero",
   getPrendasByTipo
 )
 

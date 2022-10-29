@@ -6,7 +6,8 @@ let PrendasSchema = new mongoose.Schema({
     descripcion: String,
     tipo: String,
     precio: Number,
-    img_url: String
+    img_url: String,
+    genero: String
 
 })
 
