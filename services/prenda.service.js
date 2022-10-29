@@ -28,7 +28,7 @@ const getPrendaByTipo = async function (tipo) {
 
 const getPrendaByTipoAndGenero = async function (tipo, genero) {
   try {
-    return await PrendaModelo.find({ tipo, genero });
+    return await PrendaModelo.find({ tipo:tipo, genero:genero });
   } catch (error) {
     console.error("Error al traer prendas por tipo " + error);
   }
