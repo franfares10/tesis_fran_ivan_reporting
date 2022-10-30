@@ -25,6 +25,7 @@ router.post(
     check("prenda").not().isEmpty(),
     check("centro").not().isEmpty(),
     check("emocion").not().isEmpty(),
+    check("genero").not().isEmpty(),
     validarCampos,
   ],
   postHistoricoEmociones

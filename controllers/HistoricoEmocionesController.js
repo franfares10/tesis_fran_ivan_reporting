@@ -4,11 +4,11 @@ const EmocionService = require("../services/emociones.service");
 const PrendaService = require("../services/prenda.service");
 const HistoricoEmociones = require("../models/historicoEmociones.model");
 const { generateReport } = require("./ExcelReportsControlller");
-const Excel = require('exceljs');
+const Excel = require("exceljs");
 const MailService = require("../services/mailService");
 
 const postHistoricoEmociones = async function (req, res) {
-  const { prenda, emocion, centro } = req.body;
+  const { prenda, emocion, centro, genero } = req.body;
 
   try {
     //Buscar prenda por id
@@ -25,7 +25,8 @@ const postHistoricoEmociones = async function (req, res) {
       prendaObtenida,
       emocion,
       centroComercial,
-      Date.now()
+      Date.now(),
+      genero
     );
 
     return res.status(201).json({
@@ -64,48 +65,51 @@ const getHistoricoEmociones = async function (req, res) {
   }
 };
 
-const createReport = async function (req,res) {
-  const {marca} = req.params;
+const createReport = async function (req, res) {
+  const { marca } = req.params;
 
-  try{
-      const historicoDeMarca = await HistoricoEmocionesService.getHistoricoPorMarca(marca);
-      const mailResponsable = historicoDeMarca[0].prenda.marca.mail;
-      const filename = 'MonthlyReport.xlsx';
-      let workbook = new Excel.Workbook();
-      let worksheet = workbook.addWorksheet('Dressy Monthly Report');
+  try {
+    const historicoDeMarca =
+      await HistoricoEmocionesService.getHistoricoPorMarca(marca);
+    const mailResponsable = historicoDeMarca[0].prenda.marca.mail;
+    const filename = "MonthlyReport.xlsx";
+    let workbook = new Excel.Workbook();
+    let worksheet = workbook.addWorksheet("Dressy Monthly Report");
 
-      if(historicoDeMarca.length > 0){
+    if (historicoDeMarca.length > 0) {
       worksheet.columns = [
         { header: "Prenda", key: "Prenda", width: "20" },
         { header: "Marca", key: "Marca", width: "20" },
         { header: "Emocion", key: "Emocion", width: "20" },
         { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
       ];
-  
+
       historicoDeMarca.forEach((registroDeEmocion) => {
-          worksheet.addRow([
-            registroDeEmocion.prenda.descripcion,
-            registroDeEmocion.prenda.marca.nombre,
-            registroDeEmocion.emocion,
-            registroDeEmocion.centroComercial.nombre
-          ]);
+        worksheet.addRow([
+          registroDeEmocion.prenda.descripcion,
+          registroDeEmocion.prenda.marca.nombre,
+          registroDeEmocion.emocion,
+          registroDeEmocion.centroComercial.nombre,
+        ]);
       });
 
       const buffer = await workbook.xlsx.writeBuffer();
-      
-      await MailService.mandarMail(buffer, filename,mailResponsable);
+
+      await MailService.mandarMail(buffer, filename, mailResponsable);
+    }
+
+    return res.status(200).json({ message: "Mail enviado correctamente" });
+  } catch (e) {
+    console.log(e);
+    return res
+      .status(500)
+      .json({ message: "Ocurrio un error mandando el mail" });
   }
-    
-    return res.status(200).json({message:"Mail enviado correctamente"});
-  }catch(e){
-    console.log(e)
-    return res.status(500).json({message:"Ocurrio un error mandando el mail"});
-  }
-}
+};
 
 module.exports = {
   postHistoricoEmociones,
   getHistoricoPorMarca,
   getHistoricoEmociones,
-  createReport
+  createReport,
 };

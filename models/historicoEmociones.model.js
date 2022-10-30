@@ -5,6 +5,7 @@ let HistoricoEmocionesSchema = new mongoose.Schema({
   centroComercial: Object,
   emocion: Object,
   fecha: Date,
+  genero:String
 });
 
 let HistoricoEmociones = mongoose.model(

@@ -4,7 +4,8 @@ const postHistoricoEmocion = async function (
   prendaObtenida,
   emocionObtenida,
   centroObtenido,
-  fecha
+  fecha,
+  genero
 ) {
   try {
     const historicoEmocion = {
@@ -12,6 +13,7 @@ const postHistoricoEmocion = async function (
       centroComercial: centroObtenido,
       emocion: emocionObtenida,
       fecha,
+      genero
     };
     let newHistoricoEmocion = new HistoricoEmociones(historicoEmocion);
     return await newHistoricoEmocion.save();
