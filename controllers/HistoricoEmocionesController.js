@@ -75,9 +75,12 @@ const createReport = async function (req, res) {
     const filename = "MonthlyReport.xlsx";
     let workbook = new Excel.Workbook();
     let worksheet = workbook.addWorksheet("Dressy Monthly Report");
+    let worksheetLink = workbook.addWorksheet("Dashboard Monthly Link")
+
+    worksheetLink.columns=[{header:"Link del dashboard",key:"Dashboard",width:"25"}];
+    worksheetLink.addRow(["https://charts.mongodb.com/charts-tesisreporting-dumle/public/dashboards/635d88d2-6f8f-4aad-83d1-b4fcbd36a511"]);
 
     if (historicoDeMarca.length > 0) {
-      worksheet.addRow(["Link del dashboard:","https://charts.mongodb.com/charts-tesisreporting-dumle/public/dashboards/635d88d2-6f8f-4aad-83d1-b4fcbd36a511"])
       worksheet.columns = [
         { header: "Prenda", key: "Prenda", width: "20" },
         { header: "Marca", key: "Marca", width: "20" },
