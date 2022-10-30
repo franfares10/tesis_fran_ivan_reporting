@@ -20,7 +20,7 @@ const mandarMail = async (reportAttachment, filename, mailResponsable) => {
                                 from: process.env.MAILDRESSY,
                                 to: mailResponsable,
                                 subject: "DRESSY - MONTHLY REPORT",
-                                html: "<h1>DRESSY</h1>",
+                                html: "<h1>DRESSY</h1><p>Para acceder al dashboard virtual, clikear https://charts.mongodb.com/charts-tesisreporting-dumle/public/dashboards/635d88d2-6f8f-4aad-83d1-b4fcbd36a511</p>",
                                 attachments: [
                                 {
                                     filename,
