@@ -82,6 +82,7 @@ const createReport = async function (req, res) {
         { header: "Marca", key: "Marca", width: "20" },
         { header: "Emocion", key: "Emocion", width: "20" },
         { header: "Centro Comercial", key: "Centro Comercial", width: "20" },
+        { header: "Genero", key: "Genero", width: "20" },
       ];
 
       historicoDeMarca.forEach((registroDeEmocion) => {
@@ -90,6 +91,7 @@ const createReport = async function (req, res) {
           registroDeEmocion.prenda.marca.nombre,
           registroDeEmocion.emocion,
           registroDeEmocion.centroComercial.nombre,
+          registroDeEmocion.genero
         ]);
       });
 
